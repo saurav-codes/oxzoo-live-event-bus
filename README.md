@@ -1,6 +1,8 @@
 # event-bus
 
-> **Role in the zoo:** project `event-bus` of [oxzoo-live](https://github.com/saurav-codes/oxzoo-live-control/blob/main/zoo/README.md#projects), deployed with ox on server s3 at https://event-bus.s3.zoo.sorv.dev. The contract it follows is [DESIGN.md](https://github.com/saurav-codes/oxzoo-live-control/blob/main/zoo/DESIGN.md).
+Deployed with [ox](https://deploywithox.com): deploy a repo to your own server with one command, no Docker. [Docs](https://deploywithox.com/docs) · [Stack guides](https://deploywithox.com/docs/guides)
+
+> **Role in the zoo:** project `event-bus` of [oxzoo-live](https://github.com/saurav-codes/oxzoo-live-control/blob/main/zoo/README.md#projects), deployed with [ox](https://deploywithox.com) on server s3 at https://event-bus.s3.zoo.sorv.dev. The contract it follows is [DESIGN.md](https://github.com/saurav-codes/oxzoo-live-control/blob/main/zoo/DESIGN.md).
 
 A Go ingest API on s3 that stores signed events in Postgres and publishes them to NATS JetStream, where two durable consumers in two languages pick them up: a Go worker writes a ledger row, a Python worker forwards each event, signed, to search-svc. It is the middle of the `event-river` chain (`ingested`, `go-consumer`, `py-forwarded`).
 
