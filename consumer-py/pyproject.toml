@@ -1,0 +1,12 @@
+[project]
+name = "event-bus-consumer-py"
+version = "0.1.0"
+description = "event-bus durable forward consumer: JetStream to search-svc"
+requires-python = ">=3.13"
+dependencies = ["nats-py", "httpx", "psycopg[binary]"]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+package = false

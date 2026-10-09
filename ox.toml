@@ -1,0 +1,31 @@
+[app]
+health = "/_zoo/health"
+
+[build]
+commands = [
+  "go build -o .ox/bin/app .",
+  "go build -o .ox/bin/consumer ./cmd/consumer",
+  "cd consumer-py && uv sync --frozen --no-dev",
+]
+migrate = ".ox/bin/app migrate"
+
+[workers]
+consumer-go = "exec .ox/bin/consumer"
+consumer-py = "cd consumer-py && exec .venv/bin/python consumer.py"
+
+[services]
+postgres = {}
+
+# NATS from apt. The token goes into a 0600 config file, not the command line.
+[services.nats]
+packages = ["nats-server"]
+run      = '''
+umask 077
+printf 'listen: "127.0.0.1:%s"\njetstream { store_dir: "%s", max_file_store: 1GB, max_memory_store: 64MB }\nauthorization { token: "%s" }\n' "$PORT" "$SERVICE_DATA_DIR/js" "$SERVICE_PASSWORD" > nats.conf
+exec nats-server -c nats.conf
+'''
+memory   = "256M"
+provides = { NATS_URL = "nats://${password}@${host}:${port}" }
+
+[tools]
+uv = "0.11"
